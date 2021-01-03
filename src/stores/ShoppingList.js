@@ -2,25 +2,34 @@
 import { observable, action, makeObservable } from 'mobx'
 import { Item } from './Item'
 
-
 export class ShoppingList {
-    constructor() {
+   constructor() {
         this.list = []
-        this.length
-        // your code here
+        this.length = this.list.length
 
+        makeObservable(this, {
+            list: observable, 
+            length: observable,
+            checkItem: action,
+            addItem: action,
+            editItem: action,
+            deleteItem: action
+        })
     }
-    checkItem = () => {
-        // your code here
+    checkItem = (name) => {
+        let item = this.list.find(i => i.name === name)
+        item.completed = !item.completed
+    } 
+    addItem = (name) => {
+        let item = new Item(name)
+        this.list.push(item)
     }
-    addItem = () => {
-        // your code here
+    editItem = (name, newLocation) => {
+        let item = this.list.find(i => i.name === name)
+        item.location = newLocation
     }
-    editItem = () => {
-        // your code here
-    }
-    deleteItem = () => {
-        // your code here
+    deleteItem = (name) => {
+        let item = this.list.findIndex(i => i.name === name)
+        this.list.splice(item, 1)
     }
 }
-
